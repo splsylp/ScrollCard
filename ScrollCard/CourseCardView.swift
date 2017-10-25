@@ -125,13 +125,19 @@ extension CourseCardView: UICollectionViewDataSource, UICollectionViewDelegate, 
         
         if index == centerIndex { // 若点击的是中间位置的书，则选择完成
             let cell = collectionView.cellForItem(at: indexPath) as! CourseCardCell
+            cell.imgView.image = #imageLiteral(resourceName: "img_book_inner")
+            cell.nameLabel.text = ""
+            
             let ca = CATransition()
             ca.delegate = self
             ca.type = "pageCurl"
             ca.subtype = kCATransitionFromRight
             ca.duration = 1
+            ca.isRemovedOnCompletion = false
+            ca.fillMode = kCAFillModeRemoved
             cell.containerView.layer.add(ca, forKey: nil)
             
+            selectedIndex = index
             selectedCourseClosure?(models[index])
             
         } else { // 若点击旁边的书，则让其滚动至中间位置
